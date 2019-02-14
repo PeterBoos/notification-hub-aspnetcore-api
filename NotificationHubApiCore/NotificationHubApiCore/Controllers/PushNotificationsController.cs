@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using NotificationHubApiCore.Configuration;
 using NotificationHubApiCore.NotificationHubs;
 using System.Threading.Tasks;
@@ -79,6 +80,21 @@ namespace NotificationHubApiCore.Controllers
         [HttpPost("send")]
         public async Task<IActionResult> SendNotification([FromBody] NotificationHubs.Notification newNotification)
         {
+            var content = JsonConvert.SerializeObject(new
+            {
+                Message = new
+                {
+                    Token = "",
+                    Notification = new
+                    {
+                        Body = "This is an FCM notification message!",
+                        Title = "FCM Message",
+                    }
+                }
+            });
+
+            newNotification.Content = content;
+
             HubResponse<NotificationOutcome> pushDeliveryResult = await _notificationHubProxy.SendNotification(newNotification);
 
             if (pushDeliveryResult.CompletedWithSuccess)

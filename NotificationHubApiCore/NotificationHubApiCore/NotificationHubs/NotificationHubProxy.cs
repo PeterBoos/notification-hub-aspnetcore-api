@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using NotificationHubApiCore.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace NotificationHubApiCore.NotificationHubs
